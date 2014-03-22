@@ -13,7 +13,7 @@ logging.basicConfig()
 redis_client = redis.Redis(config.redis_server)
 
 redis_client.flushall()
-redis_client.set('last_tweet_id', 444594459758452736)
+redis_client.set('last_tweet_id', config.first_tweet_id)
 
 repeat_time = 60
 
