@@ -45,7 +45,7 @@ def rubyconf():
 		top_usernames = redis_client.zrevrange('users', 0, 10)
 		top_users = [twitter_wrapper.get_user_dict(username) for username in top_usernames]
 		for user in top_users: #
-			user['top_words'] = list(redis_client.zrevrange('userwords_%s'%username, 0, 5))
+			user['top_words'] = list(redis_client.zrevrange('userwords_%s'%user['username'], 0, 5))
 			user['tweet_count'] = int(redis_client.zscore('users', user['username']))
 			total_tweet_count += user['tweet_count']
 
