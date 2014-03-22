@@ -31,9 +31,9 @@ def rubyconftest():
 	response = json.loads(response)
 
 	return render_template('charts.html',
-							ctop_keywords = json.dumps([[item.word, item.count] for item in response['top_keywords']]),
-							ctop_mentions = json.dumps([[item.username, item.mention_count] for item in response['top_mentions']]),
-							ctop_users = json.dumps([[item.username, item.tweet_count] for item in response['top_users']])
+							ctop_keywords = json.dumps([[item['word'], item['count']] for item in response['top_keywords']]),
+							ctop_mentions = json.dumps([[item['username'], item['mention_count']] for item in response['top_mentions']]),
+							ctop_users = json.dumps([[item['username'], item['tweet_count']] for item in response['top_users']])
 							)
 
 
