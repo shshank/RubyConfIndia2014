@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var keywords_data = google.visualization.arrayToDataTable({{ ctop_keywords|safe }});
+
+        var mentions_data = google.visualization.arrayToDataTable({{ ctop_mentions|safe }});
+
+        var users_data = google.visualization.arrayToDataTable({{ ctop_users|safe }});
+
+        var keywords_options = {
+          legend: 'none',
+          pieSliceText: 'label',
+          titleTextSTyle: { color: 'black',
+                            fontName: '',
+                            fontSize: 20,
+                            bold: true,
+                            italic: false},
+          chartArea: {
+                    left:'auto',
+                    top:'auto',
+                    bottom:'auto',
+                    right:'auto',
+                    width:"100%",
+                    height:"100%"}
+        };
+
+        var users_options = {
+          legend: 'none',
+          pieSliceText: 'label',
+          titleTextSTyle: { color: 'black',
+                            fontName: '',
+                            fontSize: 20,
+                            bold: true,
+                            italic: false},
+          chartArea: {
+                    left:'auto',
+                    top:'auto',
+                    bottom:'auto',
+                    right:'auto',
+                    width:"100%",
+                    height:"100%"}
+        };
+
+        var mentions_options = {
+          legend: 'none',
+          pieSliceText: 'label',
+          titleTextSTyle: { color: 'black',
+                            fontName: '',
+                            fontSize: 20,
+                            bold: true,
+                            italic: false},
+          chartArea: {
+                    left:'auto',
+                    top:'auto',
+                    bottom:'auto',
+                    right:'auto',
+                    width:"100%",
+                    height:"100%"}
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('keywords'));
+        chart.draw(data, keywords_options);
+
+        var chart = new google.visualization.PieChart(document.getElementById('mentions'));
+        chart.draw(data, mentions_options);
+
+        var chart = new google.visualization.PieChart(document.getElementById('users'));
+        chart.draw(data, users_options);
+
+      }
+    </script>
+  </head>
+  <body>
+    <div id="keywords" style="width: 30%; height: 500px;"></div>
+    <div id="mentions" style="width: 30%; height: 500px;"></div>
+    <div id="users" style="width: 30%; height: 500px;"></div>
+  </body>
+</html>
