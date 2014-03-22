@@ -62,13 +62,13 @@
                     height:"100%"}
         };
         var chart = new google.visualization.PieChart(document.getElementById('keywords'));
-        chart.draw(data, keywords_options);
+        chart.draw(keywords_data, keywords_options);
 
         var chart = new google.visualization.PieChart(document.getElementById('mentions'));
-        chart.draw(data, mentions_options);
+        chart.draw(mentions_data, mentions_options);
 
         var chart = new google.visualization.PieChart(document.getElementById('users'));
-        chart.draw(data, users_options);
+        chart.draw(users_data, users_options);
 
       }
     </script>
