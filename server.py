@@ -29,9 +29,9 @@ def home():
 def rubyconftest():
 	response = redis_client.hget('cache', 'response')
 	response = json.loads(response)
-	ctop_keywords = [[item['word'], item['count']] for item in response['top_keywords']] + [['keywords', 'frequence of occurence']]
-	ctop_mentions = [[item['username'], item['mention_count']] for item in response['top_mentions']] + [['users', 'Number of times mentioned']]
-	ctop_users = [[item['username'], item['tweet_count']] for item in response['top_users']] + [['users', 'Number of tweets']]
+	ctop_keywords = [['keywords', 'frequence of occurence']] + [[item['word'], item['count']] for item in response['top_keywords']]
+	ctop_mentions = [['users', 'Number of tweets']] + [['users', 'Number of times mentioned']] + [[item['username'], item['mention_count']] for item in response['top_mentions']]
+	ctop_users = [[item['username'], item['tweet_count']] for item in response['top_users']]
 	return render_template('charts.html',
 							ctop_keywords = json.dumps(ctop_keywords),
 							ctop_mentions = json.dumps(ctop_mentions),
