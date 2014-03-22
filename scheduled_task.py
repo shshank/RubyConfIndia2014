@@ -39,9 +39,7 @@ def run():
 
         redis_client.set('last_updated_at', int(time.time()))
 
-    redis_client.set('last_tweet_id', search_results[0].id)
-    if len(search_results)<100:
-        repeat_time = 200
+    redis_client.set('last_tweet_id', search_results[-1].id)
 
 def cache_response():
     updated_at = int(redis_client.get('last_updated_at'))
