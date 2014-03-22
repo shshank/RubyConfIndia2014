@@ -28,7 +28,8 @@ def home():
 @app.route('/rubyconfindia2014/test', methods=['GET'])
 def rubyconftest():
 	response = redis_client.hget('cache', 'response')
-	response = json.loads(response)
+	print type(response)
+	#response = json.loads(response)
 
 	return render_template('charts.html',
 							ctop_keywords = json.dumps([[item.word, item.count] for item in response['top_keywords']]),
@@ -41,7 +42,7 @@ def rubyconftest():
 @app.route('/rubyconfindia2014', methods=['GET'])
 def rubyconf():
 	response = redis_client.hget('cache', 'response')
-	response = json.loads(response)
+	#response = json.loads(response)
 
 	return jsonify(response)
 
