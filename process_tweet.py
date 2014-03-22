@@ -36,7 +36,7 @@ stopWords = [" ", "a", "am", "about", "above", "across", "after", "again", "agai
   "wanting", "wants", "was", "way", "ways", "we", "well", "wells", "went", "were", "what", "when", "where", 
   "whether", "which", "while", "who", "whole", "whose", "why", "will", "with", "within", "without", "work", 
   "worked", "working", "works", "would", "x", "y", "year", "years", "yet", "you", "young", "younger", 
-  "youngest", "your", "yours", "z"]
+  "youngest", "your", "yours", "z", 'ur', 'via', 'url']
 
 
 stopWords = stopWords+config.ignore_words
@@ -76,10 +76,8 @@ def getFeatureVector(tweet):
         #check if the word stats with an alphabet
         val = re.search(r"^[a-zA-Z][a-zA-Z0-9]*$", w)
         #ignore if it is a stop word
-        if(w in stopWords or val is None):
+        if(w.lower() in stopWords or val is None):
             continue
         else:
             featureVector.append(w.lower())
-    while 'url' in featureVector:
-      featureVector.remove('url')
     return featureVector

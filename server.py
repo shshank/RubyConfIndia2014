@@ -1,6 +1,6 @@
 import redis
 import json
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, make_response
 
 
 import config
@@ -65,7 +65,8 @@ def rubyconf():
 					'mention_count':int(redis_client.zcard('user_mentions')),
 					'keyword_count':int(redis_client.zcard('words')),
 					'tweet_count':total_tweet_count,
-					'updated_at': updated_at
+					'updated_at': updated_at,
+					'status': 1
 					}, indent=4)
 
 		redis_client.hset('cache', 'last_updated', updated_at)
@@ -75,6 +76,38 @@ def rubyconf():
 		response = redis_client.hget('cache', 'response')
 
 	return jsonify(json.loads(response))
+
+@app.route('/rubyconfindia2014/word/<word>', methods=['GET'])
+def rubyconf(word):
+	try:
+		if request.args.get('since_serialid'):
+			since_id = int(request.args.get('since_serialid'))
+		elif request.args.get('max_serialid'):
+			max_id = int(request.args.get('max_serialid'))
+
+		if request.args.get('count'):
+			count = int(request.args.get('count'))
+			count = count if count<101 else 100
+		else:
+			count = 30
+
+	except ValueError:
+		return make_response(jsonify({'status':0, 'message':'Wrong Value for Parameters'}))
+	
+	if redis_client.exists('wordtweets_%s'%word):
+		max_id = max_id if max_id else count
+
+		since_id = since_id if since_id else -1
+
+		redis_client.lrange('wordtweets_%s'%word, , )
+
+
+
+
+		
+
+	return jsonify(json.loads(response))
+
 
 if __name__ == '__main__':
 	app.run('0.0.0.0', 80)

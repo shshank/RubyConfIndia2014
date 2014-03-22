@@ -16,3 +16,11 @@ def get_tweet(tweet_id):
 def get_user_dict(screen_name):
 	user = api.GetUser(screen_name=screen_name)
 	return {'username':user.screen_name, 'name':user.GetName(), 'profile_image':user.GetProfileImageUrl()}
+
+def get_tweet_dict(tweet_object):
+	user = tweet_object.GetUser()
+	return {'body':tweet_object.GetText(),
+			'author':{'username':user.screen_name, 'name':user.GetName(), 'profile_image':user.GetProfileImageUrl()},
+			'created_at':tweet_object.created_at,
+			'tweet_id':tweet_object.id
+			}

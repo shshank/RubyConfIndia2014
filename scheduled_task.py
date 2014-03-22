@@ -11,6 +11,7 @@ logging.basicConfig()
 
 redis_client = redis.Redis(config.redis_server)
 
+redis_client.set('last_tweet_id', 444594459758452736)
 
 def run():
     search_results = twitter_wrapper.search(word=config.hashtag, since_id=int(redis_client.get('last_tweet_id')))
@@ -30,8 +31,8 @@ def run():
             redis_client.rpush('wordtweets_%s'%keyword, item.id), 
             redis_client.zincrby('words', keyword, 1)] for keyword in keywords]
 
-        redis_client.set('last_tweet_id', item.id)
         redis_client.set('last_updated_at', int(time.time()))
+    redis_client.set('last_tweet_id', search_results[0].id)
 
 
 scheduler = Scheduler()
