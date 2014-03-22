@@ -5,9 +5,6 @@
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
       function drawChart() {
-        console.log({{ ctop_keywords|safe }});
-        console.log({{ ctop_mentions|safe }});
-        console.log({{ ctop_users|safe }});
         var keywords_data = google.visualization.arrayToDataTable({{ ctop_keywords|safe }});
 
         var mentions_data = google.visualization.arrayToDataTable({{ ctop_mentions|safe }});
