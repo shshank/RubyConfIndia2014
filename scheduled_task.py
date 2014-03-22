@@ -12,10 +12,14 @@ logging.basicConfig()
 
 redis_client = redis.Redis(config.redis_server)
 
+redis_client.flushall()
 redis_client.set('last_tweet_id', 444594459758452736)
 
+repeat_time = 60
 
 def run():
+    global repeat_time
+
     search_results = twitter_wrapper.search(word=config.hashtag, since_id=int(redis_client.get('last_tweet_id')))
     print 'Fetched %s tweets'%len(search_results)
     for item in search_results:
@@ -34,7 +38,10 @@ def run():
             redis_client.zincrby('words', keyword, 1)] for keyword in keywords]
 
         redis_client.set('last_updated_at', int(time.time()))
-    redis_client.set('last_tweet_id', search_results[0].id)
+    if len(search_results)<100:
+        repeat_time = 200
+    if len(search_results)!=0:
+        redis_client.set('last_tweet_id', search_results[0].id)
 
 def cache_response():
     last_known_update = redis_client.hget('cache', 'last_updated')
@@ -81,7 +88,7 @@ def cache_response():
 
 
 scheduler = Scheduler()
-@scheduler.interval_schedule(seconds=200)
+@scheduler.interval_schedule(seconds=repeat_time)
 def startJob():
     run()
     cache_response()
