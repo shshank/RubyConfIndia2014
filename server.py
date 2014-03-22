@@ -42,7 +42,7 @@ def rubyconftest():
 def rubyconf():
 	response = redis_client.hget('cache', 'response')
 	response = json.loads(response)
-
+	print response
 	return jsonify(response)
 
 if __name__ == '__main__':
