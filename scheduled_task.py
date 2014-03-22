@@ -22,6 +22,7 @@ def run():
 
     search_results = twitter_wrapper.search(word=config.hashtag, since_id=int(redis_client.get('last_tweet_id')))
     print 'Fetched %s tweets'%len(search_results)
+    tweet_ids = []
     for item in search_results:
         username = item.user.screen_name
 
@@ -36,10 +37,12 @@ def run():
         [[redis_client.zincrby('userwords_%s'%username, keyword, 1),
             redis_client.rpush('wordtweets_%s'%keyword, item.id), 
             redis_client.zincrby('words', keyword, 1)] for keyword in keywords]
+        tweet_ids.append(item.id)
 
         redis_client.set('last_updated_at', int(time.time()))
 
-    redis_client.set('last_tweet_id', search_results[-1].id)
+    print len(tweet_ids), len(list(set(tweet_ids)))
+    redis_client.set('last_tweet_id', max(tweet_ids))
 
 def cache_response():
     updated_at = int(redis_client.get('last_updated_at'))
@@ -52,6 +55,7 @@ def cache_response():
         user['top_words'] = list(redis_client.zrevrange('userwords_%s'%user['username'], 0, 5))
         user['tweet_count'] = int(redis_client.zscore('users', user['username']))
         total_tweet_count += user['tweet_count']
+
 
     top_mention_usernames = redis_client.zrevrange('user_mentions', 0, 10)
     top_mention_users = [twitter_wrapper.get_user_dict(username) for username in top_mention_usernames]
