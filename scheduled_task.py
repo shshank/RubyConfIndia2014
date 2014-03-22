@@ -63,7 +63,7 @@ def cache_response():
         user['mention_count'] = int(redis_client.zscore('user_mentions', user['username']))
 
     top_words = redis_client.zrevrange('words', 0, 10)
-    top_words = [dict([('word', word) ('count', int(redis_client.zscore('words', word)))]) for word in top_words]
+    top_words = [dict([('word', word), ('count', int(redis_client.zscore('words', word)))]) for word in top_words]
 
     response = json.dumps({
                 'top_users':top_users,
