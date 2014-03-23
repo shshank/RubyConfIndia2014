@@ -39,7 +39,7 @@ def run():
             redis_client.zincrby('words', keyword, 1)] for keyword in keywords]
         tweet_ids.append(item.id)
 
-        redis_client.set('last_updated_at', int(time.time()))
+    redis_client.set('last_updated_at', int(time.time()))
 
     print len(tweet_ids), len(list(set(tweet_ids)))
     redis_client.set('last_tweet_id', max(tweet_ids))
