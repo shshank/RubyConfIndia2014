@@ -49,7 +49,7 @@ def cache_response():
 
     total_tweet_count = 0
 
-    top_usernames = redis_client.zrevrange('users', 0, 10)
+    top_usernames = redis_client.zrevrange('users', 0, 9)
     top_users = [twitter_wrapper.get_user_dict(username) for username in top_usernames]
     for user in top_users: #
         user['top_words'] = list(redis_client.zrevrange('userwords_%s'%user['username'], 0, 5))
@@ -57,12 +57,12 @@ def cache_response():
         total_tweet_count += user['tweet_count']
 
 
-    top_mention_usernames = redis_client.zrevrange('user_mentions', 0, 10)
+    top_mention_usernames = redis_client.zrevrange('user_mentions', 0, 9)
     top_mention_users = [twitter_wrapper.get_user_dict(username) for username in top_mention_usernames]
     for user in top_mention_users: #
         user['mention_count'] = int(redis_client.zscore('user_mentions', user['username']))
 
-    top_words = redis_client.zrevrange('words', 0, 10)
+    top_words = redis_client.zrevrange('words', 0, 9)
     top_words = [dict([('word', word), ('count', int(redis_client.zscore('words', word)))]) for word in top_words]
 
     response = json.dumps({
