@@ -44,7 +44,10 @@ def run():
     redis_client.set('last_updated_at', int(time.time()))
 
     print len(tweet_ids), len(list(set(tweet_ids)))
-    redis_client.set('last_tweet_id', max(tweet_ids))
+    try:
+        redis_client.set('last_tweet_id', max(tweet_ids))
+    except:
+        pass
 
 def cache_response():
     updated_at = int(redis_client.get('last_updated_at'))
