@@ -10,7 +10,7 @@ import twitter_wrapper
 
 logging.basicConfig()
 
-redis_client = redis.Redis(config.redis_server, db=2)
+redis_client = redis.Redis(config.redis_server, db=1)
 
 repeat_time = 200
 
