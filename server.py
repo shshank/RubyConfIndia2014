@@ -3,6 +3,7 @@ import json
 from flask import Flask, jsonify, render_template
 
 import config
+from werkzeug import SharedDataMiddleware
 
 redis_client_ruby = redis.Redis(config.redis_server)
 redis_client_yuvi = redis.Redis(config.redis_server, db=1)
@@ -11,6 +12,10 @@ redis_client_yuvi = redis.Redis(config.redis_server, db=1)
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.debug = True
+
+app.wsgi_app = SharedDataMiddleware(app.wsgi_app,
+                                    { '/images': 'templates/images' } )
+
 
 @app.route('/', methods=['GET'])
 def home():
