@@ -15,6 +15,8 @@ redis_client = redis.Redis(config.redis_server, db=1)
 repeat_time = 200
 
 redis_client.set('last_tweet_id', config.first_tweet_id)
+for key in redis_client.keys():
+    redis_client.delete(key)
 
 def run():
     global repeat_time
