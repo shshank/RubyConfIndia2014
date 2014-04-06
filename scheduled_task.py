@@ -13,11 +13,11 @@ logging.basicConfig()
 redis_client = redis.Redis(config.redis_server, db=1)
 
 repeat_time = 200
-
+'''
 for key in redis_client.keys():
     redis_client.delete(key)
 redis_client.set('last_tweet_id', config.first_tweet_id)
-
+'''
 
 def run():
     global repeat_time
