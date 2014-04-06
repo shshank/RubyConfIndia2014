@@ -3,7 +3,6 @@ import json
 from flask import Flask, jsonify, render_template
 
 import config
-from werkzeug import SharedDataMiddleware
 
 redis_client_ruby = redis.Redis(config.redis_server)
 redis_client_yuvi = redis.Redis(config.redis_server, db=1)
@@ -12,9 +11,6 @@ redis_client_yuvi = redis.Redis(config.redis_server, db=1)
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.debug = True
-
-app.wsgi_app = SharedDataMiddleware(app.wsgi_app,
-                                    { '/images': 'templates/images' } )
 
 
 @app.route('/', methods=['GET'])
@@ -38,10 +34,12 @@ def rubyconftest():
 	ctop_keywords = [['keywords', 'frequence of occurence']] + [[item['word'], item['count']] for item in response['top_keywords']]
 	ctop_mentions = [['users', 'Number of times mentioned']] + [['@%s'%item['username'], item['mention_count']] for item in response['top_mentions']]
 	ctop_users = [['users', 'Number of tweets']] + [['@%s'%item['username'], item['tweet_count']] for item in response['top_users']]
+	all_keywords = [[item[0], item[1], 'https://twitter.com/search?q=%23MiracleBoyYuvi%20'+item[0]] for item in response['all_keywords']]
 	return render_template('charts.html',
 							ctop_keywords = json.dumps(ctop_keywords),
 							ctop_mentions = json.dumps(ctop_mentions),
-							ctop_users = json.dumps(ctop_users)
+							ctop_users = json.dumps(ctop_users),
+							all_keywords = json.dumps(all_keywords)
 							)
 
 

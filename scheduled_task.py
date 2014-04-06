@@ -76,7 +76,8 @@ def cache_response():
                 'keyword_count':int(redis_client.zcard('words')),
                 'tweet_count':total_tweet_count,
                 'updated_at': updated_at,
-                'status': 1
+                'status': 1,
+                'all_keywords':[[item, int(redis_client.zrevrange('words', item))] for item in redis_client.zrevrange('words', 0, 99)]
                 }, indent=4)
 
     redis_client.hset('cache', 'last_updated', updated_at)

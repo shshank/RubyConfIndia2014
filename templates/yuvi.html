@@ -1,6 +1,43 @@
 <html style='height:100%;'>
   <head>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="http://word-cumulus-goog-vis.googlecode.com/svn/trunk/wordcumulus.js"></script>
+    <script type="text/javascript" src="http://word-cumulus-goog-vis.googlecode.com/svn/trunk/swfobject.js"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1");
+
+      // Set callback to run when API is loaded
+      google.setOnLoadCallback(drawVisualization);
+
+      // Called when the Visualization API is loaded.
+      function drawVisualization() {
+
+        // Create and populate a data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Tag');
+        data.addColumn('string', 'URL');
+        data.addColumn('number', 'count')
+        data.addRows(7);
+        var apidata = {{ all_keywords|safe }};
+        console.log(apidate);
+        var arrayLength = data.length;
+
+        for (var i = 0; i < arrayLength; i++) {
+          data.setCell(i, 0, apidata[i][0]);
+          data.setCell(i, 1, apidata[i][1]);
+          data.setCell(i, 2, apidata[i][2]);
+
+        }
+        // Instantiate our table object.
+        var vis = new gviz_word_cumulus.WordCumulus(document.getElementById('termcloud'));
+
+        // Draw our table with the data we created locally.
+        vis.draw(data, {text_color: '#00ff00', speed: 40, width:"80%", height:"100%"});
+       }
+   </script>
+
+
+
     <script type="text/javascript">
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
@@ -82,6 +119,10 @@
   <body>
     <center><h1>#MiracleBoyYuvi</h1></center>
     <br>
+    <center><h3>Term Cloud</h3>
+    <div id="termcloud" style="width: 80%; height: 500px;"></div></div></center>
+    <center><hr width=50%><center>
+
 
     <center><h3>Top 10 Keywords</h3>
     <div id="keywords" style="width: 30%; height: 500px;"></div></center>
