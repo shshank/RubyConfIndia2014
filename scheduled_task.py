@@ -10,9 +10,11 @@ import twitter_wrapper
 
 logging.basicConfig()
 
-redis_client = redis.Redis(config.redis_server)
+redis_client = redis.Redis(config.redis_server, db=2)
 
 repeat_time = 200
+
+redis_client.set('last_tweet_id', config.first_tweet_id)
 
 def run():
     global repeat_time
