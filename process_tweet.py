@@ -78,6 +78,8 @@ def getFeatureVector(tweet):
         #ignore if it is a stop word
         if(w.lower() in stopWords or val is None):
             continue
+        if(w.lower() in config.ignore_words):
+            continue
         else:
             featureVector.append(w.lower())
     return featureVector
